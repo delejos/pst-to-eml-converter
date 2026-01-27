@@ -1,4 +1,4 @@
-# PST to EML Converter (Free & Open Source)
+# PST to EML Converter
 
 A **free, open-source PST to EML converter for Windows**, built with .NET and Microsoft Outlook.  
 Convert Outlook PST files into standard EML files while preserving folder structure — **no paid licenses, no trials, no limitations**.
