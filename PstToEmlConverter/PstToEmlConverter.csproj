@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -6,20 +6,14 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-	<UseWindowsForms>true</UseWindowsForms>
-	<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <UseWindowsForms>true</UseWindowsForms>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <COMReference Include="Microsoft.Office.Interop.Outlook">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>6</VersionMinor>
-      <VersionMajor>9</VersionMajor>
-      <Guid>00062fff-0000-0000-c000-000000000046</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
+    <PackageReference Include="XstReader.Api" Version="1.0.6" />
+    <PackageReference Include="MimeKit" Version="4.15.1" />
+    <PackageReference Include="Ical.Net" Version="5.2.0" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,41 @@
-﻿<Window x:Class="PstToEmlConverter.MainWindow"
+<Window x:Class="PstToEmlConverter.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="PST → EML Converter" Height="620" Width="820" MinHeight="620"
-        WindowStartupLocation="CenterScreen">
-    <Grid Margin="12">
+        Title="PST → EML Converter" Height="700" Width="860" MinHeight="700" MinWidth="700"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F5F5">
+
+    <Window.Resources>
+        <Style TargetType="GroupBox">
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#0078D4"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#AAAAAA"/>
+                    <Setter Property="Foreground" Value="#EEEEEE"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#005A9E"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="Padding" Value="4,3"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="14">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -11,13 +43,19 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" FontSize="20" FontWeight="SemiBold"
-                   Text="PST → EML Converter" Margin="0,0,0,12"/>
+        <!-- Title -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,14">
+            <TextBlock FontSize="22" FontWeight="Bold" Foreground="#0078D4" Text="PST"/>
+            <TextBlock FontSize="22" FontWeight="Light" Foreground="#333333" Text=" → EML Converter"/>
+            <TextBlock FontSize="11" Foreground="#777777" VerticalAlignment="Bottom" Margin="10,0,0,2"
+                       Text="No Outlook required"/>
+        </StackPanel>
 
-        <!-- Source selection -->
-        <GroupBox Grid.Row="1" Header="Source" Padding="10" Margin="0,0,0,12">
+        <!-- Source -->
+        <GroupBox Grid.Row="1" Header="Source" Padding="10">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -29,84 +67,129 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" Margin="0,0,0,10">
-                    <RadioButton x:Name="RbFile" Content="Single PST file" IsChecked="True" Margin="0,0,18,0"
-                                 Checked="RbFile_Checked"/>
+                <StackPanel Grid.Row="0" Grid.ColumnSpan="3" Orientation="Horizontal" Margin="0,0,0,8">
+                    <RadioButton x:Name="RbFile" Content="Single PST file" IsChecked="True"
+                                 Margin="0,0,20,0" Checked="RbFile_Checked"/>
                     <RadioButton x:Name="RbFolder" Content="Folder with PST files"
                                  Checked="RbFolder_Checked"/>
                 </StackPanel>
 
-                <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="Path:" Margin="0,0,10,0"/>
-                <TextBox x:Name="TxtSource" Grid.Row="1" Grid.Column="1" MinWidth="480" TextChanged="AnyPathChanged"/>
-                <Button x:Name="BtnBrowseSource" Grid.Row="1" Grid.Column="2" Content="Browse…" Padding="14,6"
-                        Margin="10,0,0,0" Click="BtnBrowseSource_Click"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
+                           Text="Path:" Margin="0,0,10,0"/>
+                <TextBox x:Name="TxtSource" Grid.Row="1" Grid.Column="1"
+                         TextChanged="AnyPathChanged"/>
+                <Button x:Name="BtnBrowseSource" Grid.Row="1" Grid.Column="2"
+                        Content="Browse…" Padding="14,6" Margin="8,0,0,0"
+                        Click="BtnBrowseSource_Click"/>
             </Grid>
         </GroupBox>
 
         <!-- Destination -->
-        <GroupBox Grid.Row="2" Header="Destination" Padding="10" Margin="0,0,0,12">
+        <GroupBox Grid.Row="2" Header="Destination" Padding="10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Output folder:" Margin="0,0,10,0"/>
-                <TextBox x:Name="TxtDest" Grid.Column="1" MinWidth="480" TextChanged="AnyPathChanged"/>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                           Text="Output folder:" Margin="0,0,10,0"/>
+                <TextBox x:Name="TxtDest" Grid.Column="1" TextChanged="AnyPathChanged"/>
                 <Button Grid.Column="2" Content="Browse…" Padding="14,6"
-                        Margin="10,0,0,0" Click="BtnBrowseDest_Click"/>
+                        Margin="8,0,0,0" Click="BtnBrowseDest_Click"/>
             </Grid>
         </GroupBox>
 
-        <GroupBox Grid.Row="3" Header="Options" Padding="10" Margin="0,0,0,12">
-            <StackPanel>
-                <CheckBox x:Name="ChkIncludeSubfolders"
-                  Content="Include subfolders when scanning a folder"
-                  IsChecked="True"
-                  Margin="0,0,0,6"/>
-                <CheckBox x:Name="ChkPreserveStructure"
-                  Content="Preserve folder structure (mirror PST folders)"
-                  IsChecked="True"
-                  Margin="0,0,0,6"/>
-                <CheckBox x:Name="ChkSkipExisting"
-                  Content="Skip if output already exists"
-                  IsChecked="False"/>
-            </StackPanel>
+        <!-- Options -->
+        <GroupBox Grid.Row="3" Header="Options" Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left column -->
+                <StackPanel Grid.Column="0">
+                    <CheckBox x:Name="ChkIncludeSubfolders"
+                              Content="Include subfolders when scanning a folder"
+                              IsChecked="True"/>
+                    <CheckBox x:Name="ChkPreserveStructure"
+                              Content="Preserve PST folder structure"
+                              IsChecked="True"/>
+                    <CheckBox x:Name="ChkSkipExisting"
+                              Content="Skip if output file already exists"
+                              IsChecked="False"/>
+                </StackPanel>
+
+                <!-- Right column: item type toggles -->
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Export item types:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <CheckBox x:Name="ChkExportEmails"
+                              Content="Emails  (.eml)"
+                              IsChecked="True" IsEnabled="False"/>
+                    <CheckBox x:Name="ChkExportContacts"
+                              Content="Contacts  (.vcf)"
+                              IsChecked="True"/>
+                    <CheckBox x:Name="ChkExportCalendar"
+                              Content="Calendar  (.ics)"
+                              IsChecked="True"/>
+                    <CheckBox x:Name="ChkExportTasks"
+                              Content="Tasks  (.ics)"
+                              IsChecked="True"/>
+                </StackPanel>
+            </Grid>
         </GroupBox>
 
         <!-- Log -->
-        <GroupBox Grid.Row="4" Header="Log" Padding="10">
+        <GroupBox Grid.Row="4" Header="Log" Padding="8">
             <DockPanel>
-                <Button DockPanel.Dock="Top"
-        Content="Clear log"
-        MinWidth="90"
-        HorizontalAlignment="Right"
-        Padding="10,6"
-        Margin="0,0,0,8"
-        Click="BtnClearLog_Click"/>
-                <TextBox x:Name="TxtLog"
-                 IsReadOnly="True"
-                 VerticalScrollBarVisibility="Auto"
-                 TextWrapping="Wrap"
-                 AcceptsReturn="True"/>
+                <Button DockPanel.Dock="Top" Content="Clear log"
+                        HorizontalAlignment="Right" Padding="10,5"
+                        Margin="0,0,0,6" Click="BtnClearLog_Click"/>
+                <TextBox x:Name="TxtLog" IsReadOnly="True"
+                         VerticalScrollBarVisibility="Auto"
+                         TextWrapping="Wrap" AcceptsReturn="True"
+                         Background="#FAFAFA" FontFamily="Consolas" FontSize="11"/>
             </DockPanel>
         </GroupBox>
 
-        <!-- Footer controls -->
-        <Grid Grid.Row="5" Margin="0,12,0,0">
+        <!-- Status bar -->
+        <Border Grid.Row="5" Background="#E8F0FE" CornerRadius="3"
+                Padding="8,5" Margin="0,0,0,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="TxtStatus" Grid.Column="0"
+                           Text="Ready." Foreground="#333333" FontSize="11"
+                           TextTrimming="CharacterEllipsis"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10,0,0,0">
+                    <TextBlock x:Name="TxtCounts" Foreground="#555555" FontSize="11"
+                               Visibility="Collapsed"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Footer: progress + buttons -->
+        <Grid Grid.Row="6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <ProgressBar x:Name="Progress" Height="16" VerticalAlignment="Center" Minimum="0" Maximum="100"/>
+            <ProgressBar x:Name="Progress" Height="18" VerticalAlignment="Center"
+                         Minimum="0" Maximum="100" Background="#E0E0E0"
+                         Foreground="#0078D4"/>
 
-            <Button Grid.Column="1" x:Name="BtnStart" Content="Start" Padding="18,8"
-                    Margin="12,0,0,0" Click="BtnStart_Click" IsEnabled="False"/>
-            <Button Grid.Column="2" x:Name="BtnCancel" Content="Cancel" Padding="18,8"
-                    Margin="10,0,0,0" Click="BtnCancel_Click" IsEnabled="False"/>
+            <Button Grid.Column="1" x:Name="BtnStart" Content="Start"
+                    Padding="22,9" Margin="10,0,0,0"
+                    Click="BtnStart_Click" IsEnabled="False"/>
+            <Button Grid.Column="2" x:Name="BtnCancel" Content="Cancel"
+                    Padding="16,9" Margin="8,0,0,0"
+                    Click="BtnCancel_Click" IsEnabled="False"
+                    Background="#D83B01"/>
         </Grid>
     </Grid>
 </Window>
